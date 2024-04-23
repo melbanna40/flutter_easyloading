@@ -194,40 +194,29 @@ class _Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(50.0),
-      decoration: BoxDecoration(
-        color: EasyLoadingTheme.backgroundColor,
-        borderRadius: BorderRadius.circular(
-          EasyLoadingTheme.radius,
-        ),
-        boxShadow: EasyLoadingTheme.boxShadow,
-      ),
-      padding: EasyLoadingTheme.contentPadding,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          if (indicator != null)
-            Container(
-              margin: status?.isNotEmpty == true
-                  ? EasyLoadingTheme.textPadding
-                  : EdgeInsets.zero,
-              child: indicator,
-            ),
-          if (status != null)
-            Text(
-              status!,
-              style: EasyLoadingTheme.textStyle ??
-                  TextStyle(
-                    color: EasyLoadingTheme.textColor,
-                    fontSize: EasyLoadingTheme.fontSize,
-                  ),
-              textAlign: EasyLoadingTheme.textAlign,
-            ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        if (indicator != null)
+          Container(
+            margin: status?.isNotEmpty == true
+                ? EasyLoadingTheme.textPadding
+                : EdgeInsets.zero,
+            child: indicator,
+          ),
+        if (status != null)
+          Text(
+            status!,
+            style: EasyLoadingTheme.textStyle ??
+                TextStyle(
+                  color: EasyLoadingTheme.textColor,
+                  fontSize: EasyLoadingTheme.fontSize,
+                ),
+            textAlign: EasyLoadingTheme.textAlign,
+          ),
+      ],
     );
   }
 }
