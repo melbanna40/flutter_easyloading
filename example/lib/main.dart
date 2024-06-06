@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import './custom_animation.dart';
-
 import './test.dart';
 
 void main() {
@@ -27,6 +26,7 @@ void configLoading() {
     ..maskColor = Colors.blue.withOpacity(0.5)
     ..userInteractions = true
     ..dismissOnTap = false
+    ..withContainer=true
     ..customAnimation = CustomAnimation();
 }
 
@@ -114,7 +114,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () async {
                       _timer?.cancel();
                       await EasyLoading.show(
-                        status: 'loading...',
                         maskType: EasyLoadingMaskType.black,
                       );
                       print('EasyLoading show');

@@ -25,13 +25,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import './widgets/container.dart';
-import './widgets/progress.dart';
-import './widgets/indicator.dart';
-import './widgets/overlay_entry.dart';
-import './widgets/loading.dart';
 import './animations/animation.dart';
 import './theme.dart';
+import './widgets/container.dart';
+import './widgets/indicator.dart';
+import './widgets/loading.dart';
+import './widgets/overlay_entry.dart';
+import './widgets/progress.dart';
 
 /// loading style
 enum EasyLoadingStyle {
@@ -198,8 +198,13 @@ class EasyLoading {
   Timer? _timer;
 
   Widget? get w => _w;
+
   GlobalKey<EasyLoadingContainerState>? get key => _key;
+
   GlobalKey<EasyLoadingProgressState>? get progressKey => _progressKey;
+
+  /// should dismiss on user tap.
+  bool? withContainer = false;
 
   final List<EasyLoadingStatusCallback> _statusCallbacks =
       <EasyLoadingStatusCallback>[];
@@ -223,6 +228,7 @@ class EasyLoading {
     displayDuration = const Duration(milliseconds: 2000);
     animationDuration = const Duration(milliseconds: 200);
     textPadding = const EdgeInsets.only(bottom: 10.0);
+    withContainer = false;
     contentPadding = const EdgeInsets.symmetric(
       vertical: 15.0,
       horizontal: 20.0,
@@ -230,6 +236,7 @@ class EasyLoading {
   }
 
   static EasyLoading get instance => _instance;
+
   static bool get isShow => _instance.w != null;
 
   /// init EasyLoading
@@ -251,6 +258,7 @@ class EasyLoading {
     Widget? indicator,
     EasyLoadingMaskType? maskType,
     bool? dismissOnTap,
+    bool withContainer = false,
   }) {
     Widget w = indicator ?? (_instance.indicatorWidget ?? LoadingIndicator());
     return _instance._show(
@@ -258,6 +266,7 @@ class EasyLoading {
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       w: w,
+      withContainer: withContainer,
     );
   }
 
@@ -266,6 +275,7 @@ class EasyLoading {
     double value, {
     String? status,
     EasyLoadingMaskType? maskType,
+    bool withContainer = false,
   }) async {
     assert(
       value >= 0.0 && value <= 1.0,
@@ -292,6 +302,7 @@ class EasyLoading {
         maskType: maskType,
         dismissOnTap: false,
         w: w,
+        withContainer: withContainer,
       );
       _instance._progressKey = _progressKey;
     }
@@ -307,6 +318,7 @@ class EasyLoading {
     Duration? duration,
     EasyLoadingMaskType? maskType,
     bool? dismissOnTap,
+    bool withContainer = false,
   }) {
     Widget w = _instance.successWidget ??
         Icon(
@@ -320,6 +332,7 @@ class EasyLoading {
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       w: w,
+      withContainer: withContainer,
     );
   }
 
@@ -329,6 +342,7 @@ class EasyLoading {
     Duration? duration,
     EasyLoadingMaskType? maskType,
     bool? dismissOnTap,
+        bool withContainer = false,
   }) {
     Widget w = _instance.errorWidget ??
         Icon(
@@ -342,6 +356,7 @@ class EasyLoading {
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       w: w,
+      withContainer: withContainer,
     );
   }
 
@@ -351,6 +366,7 @@ class EasyLoading {
     Duration? duration,
     EasyLoadingMaskType? maskType,
     bool? dismissOnTap,
+        bool withContainer = false,
   }) {
     Widget w = _instance.infoWidget ??
         Icon(
@@ -364,6 +380,7 @@ class EasyLoading {
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       w: w,
+      withContainer: withContainer,
     );
   }
 
@@ -419,6 +436,7 @@ class EasyLoading {
     Duration? duration,
     EasyLoadingMaskType? maskType,
     bool? dismissOnTap,
+    bool withContainer = false,
     EasyLoadingToastPosition? toastPosition,
   }) async {
     assert(
@@ -472,6 +490,7 @@ class EasyLoading {
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       completer: completer,
+      withContainer: withContainer,
     );
     completer.future.whenComplete(() {
       _callback(EasyLoadingStatus.show);

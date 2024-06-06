@@ -25,8 +25,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import '../theme.dart';
 import '../easy_loading.dart';
+import '../theme.dart';
 
 //https://docs.flutter.dev/development/tools/sdk/release-notes/release-notes-3.0.0
 T? _ambiguate<T>(T? value) => value;
@@ -39,6 +39,7 @@ class EasyLoadingContainer extends StatefulWidget {
   final EasyLoadingMaskType? maskType;
   final Completer<void>? completer;
   final bool animation;
+  final bool withContainer;
 
   const EasyLoadingContainer({
     Key? key,
@@ -49,6 +50,7 @@ class EasyLoadingContainer extends StatefulWidget {
     this.maskType,
     this.completer,
     this.animation = true,
+    this.withContainer = false,
   }) : super(key: key);
 
   @override
@@ -172,6 +174,7 @@ class EasyLoadingContainerState extends State<EasyLoadingContainer>
               _Indicator(
                 status: _status,
                 indicator: widget.indicator,
+                withContainer: widget.withContainer,
               ),
               _animationController,
               _alignment,
@@ -186,37 +189,52 @@ class EasyLoadingContainerState extends State<EasyLoadingContainer>
 class _Indicator extends StatelessWidget {
   final Widget? indicator;
   final String? status;
+  final bool withContainer;
 
   const _Indicator({
     required this.indicator,
     required this.status,
+    required this.withContainer,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        if (indicator != null)
-          Container(
-            margin: status?.isNotEmpty == true
-                ? EasyLoadingTheme.textPadding
-                : EdgeInsets.zero,
-            child: indicator,
-          ),
-        if (status != null)
-          Text(
-            status!,
-            style: EasyLoadingTheme.textStyle ??
-                TextStyle(
-                  color: EasyLoadingTheme.textColor,
-                  fontSize: EasyLoadingTheme.fontSize,
-                ),
-            textAlign: EasyLoadingTheme.textAlign,
-          ),
-      ],
+    return Container(
+      margin: const EdgeInsets.all(50.0),
+      decoration: withContainer
+          ? BoxDecoration(
+              color: EasyLoadingTheme.backgroundColor,
+              borderRadius: BorderRadius.circular(
+                EasyLoadingTheme.radius,
+              ),
+              boxShadow: EasyLoadingTheme.boxShadow,
+            )
+          : null,
+      padding: EasyLoadingTheme.contentPadding,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          if (indicator != null)
+            Container(
+              margin: status?.isNotEmpty == true
+                  ? EasyLoadingTheme.textPadding
+                  : EdgeInsets.zero,
+              child: indicator,
+            ),
+          if (status != null)
+            Text(
+              status!,
+              style: EasyLoadingTheme.textStyle ??
+                  TextStyle(
+                    color: EasyLoadingTheme.textColor,
+                    fontSize: EasyLoadingTheme.fontSize,
+                  ),
+              textAlign: EasyLoadingTheme.textAlign,
+            ),
+        ],
+      ),
     );
   }
 }
